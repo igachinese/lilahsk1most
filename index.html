@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Мост к HSK 1 · 5 мини-уроков — 莉拉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Literata:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4ece0;--sheet:#fffcf7;--ink:#221e1b;--ink-soft:#5f574f;--ink-faint:#9a9188;
+    --cinnabar:#a32a1f;--gold:#bf8a2e;--jade:#2f7355;--err:#b3261e;--line:#ded3bf;--rule:#2b2521;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  :root{padding-top:env(safe-area-inset-top,0px)}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  body{background:var(--paper);color:var(--ink);font-family:'Literata',Georgia,serif;line-height:1.55;font-size:16px;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));-webkit-font-smoothing:antialiased}
+  .zh{font-family:'Noto Serif SC',serif}
+  .wrap{max-width:820px;margin:0 auto;padding:0 16px}
+  button{font-family:inherit;cursor:pointer;border-radius:8px;transition:.15s;font-size:.88rem}
+
+  header{padding:38px 0 20px}
+  .eyebrow{font-size:.74rem;letter-spacing:.18em;color:var(--cinnabar);margin-bottom:12px}
+  h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(1.9rem,6vw,2.9rem);line-height:1.05}
+  h1 .zh{color:var(--cinnabar);font-weight:900}
+  .lede{margin-top:14px;color:var(--ink-soft);max-width:58ch}
+  .statline{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap}
+  .stat{background:var(--sheet);border:1px solid var(--line);border-radius:30px;padding:5px 13px;font-size:.8rem;color:var(--ink-soft)}
+  .stat b{color:var(--cinnabar)}
+
+  nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(244,236,224,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 0;margin:22px 0 24px}
+  .tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{white-space:nowrap;padding:8px 13px;border:1px solid var(--line);background:var(--sheet);color:var(--ink-soft);flex-shrink:0}
+  .tab b{font-family:'Playfair Display',serif;color:var(--cinnabar);margin-right:5px}
+  .tab.on{background:var(--rule);color:#f4ece0;border-color:var(--rule)}
+  .tab.on b{color:var(--gold)}
+
+  .blockhd{border-bottom:2px solid var(--rule);padding-bottom:12px;margin-bottom:22px}
+  .blockhd .num{font-family:'Playfair Display',serif;font-weight:900;font-size:.9rem;color:var(--cinnabar);letter-spacing:.1em}
+  .blockhd h2{font-family:'Noto Serif SC',serif;font-weight:700;font-size:1.9rem;margin:2px 0 3px;letter-spacing:.06em}
+  .blockhd .ru{font-family:'Playfair Display',serif;font-weight:700;font-size:1.25rem}
+  .blockhd .goal{margin-top:8px;font-size:.88rem;color:var(--ink-soft)}
+
+  section.mod{margin-bottom:30px}
+  .modhd{display:flex;align-items:baseline;gap:11px;margin-bottom:13px}
+  .modhd .cn{font-family:'Noto Serif SC',serif;font-weight:900;font-size:1.5rem;color:var(--cinnabar);line-height:1}
+  .modhd h3{font-size:1.05rem;font-weight:600}
+  .modhd .tip{margin-left:auto;font-size:.78rem;color:var(--ink-faint);text-align:right}
+
+  /* СЛОВА */
+  .words{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:9px}
+  .w{background:var(--sheet);border:1px solid var(--line);border-radius:9px;padding:11px 12px;cursor:pointer;position:relative}
+  .w:hover{border-color:var(--gold)}
+  .w .h{font-family:'Noto Serif SC',serif;font-size:1.7rem;line-height:1.15}
+  .w .p{font-style:italic;color:var(--cinnabar);font-size:.85rem}
+  .w .r{font-size:.85rem;color:var(--ink-soft);margin-top:2px}
+  .w .m{font-size:.76rem;color:var(--ink-faint);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px;display:none;line-height:1.45}
+  .w.open .m{display:block}
+  .w.blur .p,.w.blur .r{filter:blur(4px)}
+  .w .known{position:absolute;top:8px;right:9px;font-size:.62rem;background:rgba(47,115,85,.13);color:var(--jade);padding:2px 6px;border-radius:4px}
+
+  /* ГОВОРИМ */
+  .say{background:var(--sheet);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .sr{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer}
+  .sr:first-child{border-top:none}
+  .sr:hover{background:#faf4e9}
+  .sr .n{font-family:'Playfair Display',serif;font-weight:900;color:var(--ink-faint);width:20px;flex-shrink:0}
+  .sr .body{flex:1}
+  .sr .rus{font-size:.97rem}
+  .sr .ans{display:none;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line)}
+  .sr.open .ans{display:block}
+  .sr .ans .zh{font-size:1.32rem;line-height:1.6;display:block}
+  .sr .ans .p{font-style:italic;color:var(--cinnabar);font-size:.85rem}
+  .sr .arrow{color:var(--gold);flex-shrink:0;font-size:.8rem;padding-top:3px}
+
+  /* ПИШЕМ */
+  .write{background:var(--sheet);border:1px solid var(--line);border-radius:9px;padding:6px 18px 16px}
+  .task{padding:14px 0;border-top:1px solid var(--line)}
+  .task:first-child{border-top:none}
+  .task .tt{font-weight:600;font-size:.95rem;margin-bottom:6px}
+  .task .tt i{font-style:normal;color:var(--cinnabar);font-family:'Playfair Display',serif;font-weight:900;margin-right:7px}
+  .task .td{font-size:.9rem;color:var(--ink-soft)}
+  .task .td .zh{font-size:1.2rem}
+  .grid-copy{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}
+  .cell{width:56px;height:56px;border:1px solid var(--line);position:relative;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;font-size:1.9rem;background:#fff}
+  .cell::before,.cell::after{content:"";position:absolute;background:var(--line)}
+  .cell::before{left:50%;top:0;bottom:0;width:1px;transform:translateX(-.5px)}
+  .cell::after{top:50%;left:0;right:0;height:1px;transform:translateY(-.5px)}
+  .cell span{position:relative;z-index:2;color:#cbbfa8}
+  .lines{margin-top:8px}
+  .lines i{display:block;height:30px;border-bottom:1px solid var(--line)}
+
+  /* ТЕСТ */
+  .test{background:var(--sheet);border:1px solid var(--line);border-radius:9px;padding:6px 18px 18px}
+  .ti{padding:14px 0;border-top:1px solid var(--line)}
+  .ti:first-child{border-top:none}
+  .ti .q{font-size:1.05rem}
+  .ti .q .zh{font-size:1.35rem}
+  .ti .q .em{font-size:1.6rem;margin-right:8px;vertical-align:-3px}
+  .ti .py{font-style:italic;color:var(--cinnabar);font-size:.82rem;margin-bottom:3px}
+  .opts{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+  .opt{padding:7px 14px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font-family:'Noto Serif SC',serif;font-size:1.15rem}
+  .opt.lat{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem}
+  .opt:hover{border-color:var(--gold)}
+  .opt.sel{background:var(--rule);color:#fff;border-color:var(--rule)}
+  .opt.ok{background:var(--jade);border-color:var(--jade);color:#fff}
+  .opt.bad{background:var(--err);border-color:var(--err);color:#fff}
+  .opt.miss{border-color:var(--jade);color:var(--jade);border-style:dashed}
+  .tres{margin-top:14px;padding:12px 14px;background:var(--rule);color:#f2ece1;border-radius:8px;display:none;font-size:.92rem}
+  .tres.show{display:block}
+  .tres b{font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff}
+
+  /* СПРИНТ */
+  .sprint{background:var(--rule);color:#f2ece1;border-radius:12px;padding:22px;text-align:center;display:none}
+  .sprint.on{display:block}
+  .sprint .clock{font-family:'Playfair Display',serif;font-weight:900;font-size:2.4rem;color:var(--gold);line-height:1}
+  .sprint .card{font-family:'Noto Serif SC',serif;font-size:3.4rem;margin:14px 0 4px;color:#fff;min-height:70px}
+  .sprint .sub{font-style:italic;color:#b7ac9c;min-height:24px}
+  .sprint .btns{margin-top:16px;display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+  .sprint button{padding:9px 18px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#f2ece1}
+  .sprint button.y{background:var(--jade);border-color:var(--jade);color:#fff}
+  .sprint button.n{background:var(--err);border-color:var(--err);color:#fff}
+  .sprint .done{font-size:.9rem;color:#c9bfb0;line-height:1.7}
+  .sprint .done .zh{color:#fff;font-size:1.2rem}
+
+  .btn{padding:8px 14px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink)}
+  .btn:hover{background:#f7f0e4}
+  .btn.main{background:var(--cinnabar);border-color:var(--cinnabar);color:#fff;font-weight:600}
+  .btn.main:hover{background:#8a2118}
+
+  .footbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(244,236,224,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:11px 0 calc(11px + env(safe-area-inset-bottom,0px))}
+  .footbar .row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  .footnote{margin:30px 0 0;font-size:.78rem;color:var(--ink-faint);text-align:center;line-height:1.7}
+
+  @media print{
+    body{background:#fff;padding:0}
+    nav,.footbar,.sprint,.words,.say,.test,header .statline,.modhd .tip{display:none!important}
+    .mod.m-words,.mod.m-say,.mod.m-test,.mod.m-sprint{display:none!important}
+    .block{display:block!important;page-break-after:always}
+    .write{border:none;padding:0}
+  }
+  body.printmode .mod.m-words,body.printmode .mod.m-say,body.printmode .mod.m-test,body.printmode .mod.m-sprint{display:none}
+  body.printmode .block{display:block!important}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Подготовка к пробному экзамену</div>
+  <h1>Мост к <span class="zh">HSK 一级</span></h1>
+  <p class="lede">Пять коротких блоков: 60 слов, которых нет в нашем учебнике, но которые встретятся на экзамене. Каждый блок — слова, разговор, письмо и мини-тест.</p>
+  <div class="statline">
+    <span class="stat"><b>5</b> блоков</span>
+    <span class="stat"><b>60</b> новых слов</span>
+    <span class="stat"><b>25</b> минут на блок</span>
+    <span class="stat">для <b>莉拉</b></span>
+  </div>
+</header>
+
+<nav><div class="tabs" id="tabs"></div></nav>
+<div id="blocks"></div>
+
+<p class="footnote">После пятого блока — генеральная репетиция и пробный вариант HSK 1.<br>加油！💪</p>
+</div>
+
+<div class="footbar"><div class="wrap"><div class="row">
+  <button class="btn main" id="bSprint">⏱ Спринт: 60 секунд</button>
+  <button class="btn" id="bBlur">Скрыть перевод</button>
+  <button class="btn" id="bMnem">Подсказки к иероглифам</button>
+  <button class="btn" id="bPrint">🖨 Печать письменных заданий</button>
+</div></div></div>
+
+<script>
+const B=[
+{n:1,cn:'我每天做什么',ru:'Что я делаю каждый день',
+ goal:'Восемь глаголов повседневных действий и предметы вокруг них. Это основа: без них не читается ни одно задание экзамена.',
+ words:[
+  {h:'吃',p:'chī',r:'есть, кушать',m:'Слева 口 — рот. Всё, что делаем ртом, пишется с этим ключом.'},
+  {h:'喝',p:'hē',r:'пить',m:'Тоже 口 слева — брат-близнец 吃. Ешь ртом, пьёшь ртом.'},
+  {h:'看',p:'kàn',r:'смотреть; навещать',m:'Сверху рука 手, снизу глаз 目 — ладонь козырьком над глазом, всматриваешься вдаль.'},
+  {h:'读',p:'dú',r:'читать вслух',m:'Слева 讠 — «речь». Читать вслух — это всё-таки говорить.'},
+  {h:'写',p:'xiě',r:'писать',m:'Сверху 冖 — крышка стола, под которой лежит бумага.'},
+  {h:'学习',p:'xuéxí',r:'учить, изучать',m:'学 ты уже знаешь по 学生 и 中学生 — «учиться».',k:1},
+  {h:'听见',p:'tīngjiàn',r:'услышать',m:'听 — слушать, 见 — тот самый из 再见. Слушал и получил результат = услышал.',k:1},
+  {h:'睡觉',p:'shuìjiào',r:'спать',m:'В 睡 слева глаз 目, справа 垂 «свисать»: веки опустились.'},
+  {h:'水',p:'shuǐ',r:'вода',m:'Древний рисунок ручья с брызгами по бокам.'},
+  {h:'茶',p:'chá',r:'чай',m:'Сверху 艹 — трава. Чай ведь и правда лист.'},
+  {h:'书',p:'shū',r:'книга',m:'Упрощение от 書 — там наверху была кисть 聿.'},
+  {h:'汉语',p:'Hànyǔ',r:'китайский язык',m:'汉 — народ хань, 语 — язык. Буквально «язык ханьцев».'},
+  {h:'汉字',p:'Hànzì',r:'иероглиф',m:'В 字 под крышей 宀 сидит ребёнок 子 и учит знаки.'},
+  {h:'电视',p:'diànshì',r:'телевизор',m:'电 ты знаешь по 电话! 视 — смотреть. «Электро-смотрелка».',k:1}
+ ],
+ say:[
+  {r:'Я каждый день пью воду.',z:'我每天喝水。',p:'Wǒ měitiān hē shuǐ.'},
+  {r:'Я не пью чай.',z:'我不喝茶。',p:'Wǒ bù hē chá.'},
+  {r:'Ты смотришь телевизор?',z:'你看电视吗？',p:'Nǐ kàn diànshì ma?'},
+  {r:'Я учу китайский язык.',z:'我学习汉语。',p:'Wǒ xuéxí Hànyǔ.'},
+  {r:'Я пишу иероглифы.',z:'我写汉字。',p:'Wǒ xiě Hànzì.'},
+  {r:'Моя мама читает книгу.',z:'我妈妈读书。',p:'Wǒ māma dú shū.'},
+  {r:'Ты слышал?',z:'你听见了吗？',p:'Nǐ tīngjiàn le ma?'},
+  {r:'Я ложусь спать в девять вечера.',z:'我晚上九点睡觉。',p:'Wǒ wǎnshang jiǔ diǎn shuìjiào.'},
+  {r:'Папа пьёт чай, мама пьёт воду.',z:'爸爸喝茶，妈妈喝水。',p:'Bàba hē chá, māma hē shuǐ.'},
+  {r:'Я не смотрю телевизор, я читаю книгу.',z:'我不看电视，我读书。',p:'Wǒ bú kàn diànshì, wǒ dú shū.'}
+ ],
+ write:[
+  {t:'Пропиши в клетках',d:'По одной строке на иероглиф, вслух проговаривая пиньинь.',copy:['吃','喝','看','水','书','写']},
+  {t:'Вставь глагол',d:'我 ___ 水。&nbsp;&nbsp;我 ___ 电视。&nbsp;&nbsp;我 ___ 汉字。&nbsp;&nbsp;我 ___ 汉语。&nbsp;&nbsp;我晚上十点 ___ 。',zh:1},
+  {t:'Соедини пары',d:'Выпиши в тетрадь и соедини стрелками: 喝 · 看 · 书 · 茶 · 睡觉 · 电视 &nbsp;→&nbsp; книга · пить · телевизор · чай · смотреть · спать',zh:1},
+  {t:'Диктант',d:'Учитель диктует по-русски — ты пишешь иероглифами: пить воду · смотреть телевизор · учить китайский · спать · книга.'},
+  {t:'Три предложения о себе',d:'Напиши три предложения про свой день, используя новые глаголы. Обязательно с 每天 или со временем (七点、晚上…).',lines:3}
+ ],
+ test:[
+  {t:'tf',em:'💧',w:'水',p:'shuǐ',a:1},
+  {t:'tf',em:'📺',w:'书',p:'shū',a:0},
+  {t:'tf',em:'😴',w:'睡觉',p:'shuìjiào',a:1},
+  {t:'tf',em:'🍵',w:'茶',p:'chá',a:1},
+  {t:'ch',q:'我每天 ___ 水。',p:'Wǒ měitiān __ shuǐ.',o:['喝','写','看'],a:0},
+  {t:'ch',q:'我 ___ 汉字。',p:'Wǒ __ Hànzì.',o:['吃','写','喝'],a:1}
+ ]},
+
+{n:2,cn:'买东西',ru:'Покупки, счёт и описание',
+ goal:'Цены, счётные слова и оценка вещей. Числа ты уже знаешь отлично — здесь мы к ним просто добавляем 块 и 多少钱.',
+ words:[
+  {h:'买',p:'mǎi',r:'покупать',m:'Не путай с 卖 mài «продавать» — у продажи сверху лишняя черта.'},
+  {h:'多少钱',p:'duōshao qián',r:'сколько стоит',m:'多少 ты знаешь по телефонным номерам! Добавили 钱 — слева ключ 钅«металл», деньги.',k:1},
+  {h:'块',p:'kuài',r:'юань (в разговоре)',m:'Слева 土 — земля, кусок. «Кусочек» денег.'},
+  {h:'个',p:'gè',r:'счётное слово (почти для всего)',m:'Как 口 в 五口人 — только универсальное: 三个杯子.',k:1},
+  {h:'本',p:'běn',r:'счётное слово для книг',m:'Дерево 木 с чертой у корня. Книга — из дерева.'},
+  {h:'这个',p:'zhège',r:'этот, это',m:'这 «этот» + счётное слово 个.'},
+  {h:'这些',p:'zhèxiē',r:'эти (много)',m:'То же 这, но во множественном.'},
+  {h:'杯子',p:'bēizi',r:'чашка, стакан',m:'Слева 木 — дерево: раньше чашки были деревянные.'},
+  {h:'水果',p:'shuǐguǒ',r:'фрукты',m:'水 «вода» + 果 «плод» — сочный плод.'},
+  {h:'衣服',p:'yīfu',r:'одежда',m:'Общее слово для всего, что ты уже знаешь: 衬衫、裙子、牛仔裤.',k:1},
+  {h:'漂亮',p:'piàoliang',r:'красивый',m:'Слева в 漂 три точки 氵— вода: «блестящий, как на воде».'},
+  {h:'太…了',p:'tài … le',r:'слишком, очень',m:'Обнимает прилагательное с двух сторон: 太漂亮了！'},
+  {h:'不少',p:'bù shǎo',r:'немало',m:'不 и 少 ты знаешь оба — вместе получается «немало».',k:1},
+  {h:'多',p:'duō',r:'много',m:'Два «вечера» 夕 друг над другом — много-много раз.'}
+ ],
+ say:[
+  {r:'Сколько это стоит?',z:'这个多少钱？',p:'Zhège duōshao qián?'},
+  {r:'Сорок юаней.',z:'四十块。',p:'Sìshí kuài.'},
+  {r:'Я покупаю книгу.',z:'我买一本书。',p:'Wǒ mǎi yì běn shū.'},
+  {r:'Три чашки.',z:'三个杯子。',p:'Sān gè bēizi.'},
+  {r:'Эти фрукты купила я.',z:'这些水果是我买的。',p:'Zhèxiē shuǐguǒ shì wǒ mǎi de.'},
+  {r:'Одежда очень красивая.',z:'衣服很漂亮。',p:'Yīfu hěn piàoliang.'},
+  {r:'Слишком красиво!',z:'太漂亮了！',p:'Tài piàoliang le!'},
+  {r:'Мне нравится розовая одежда.',z:'我喜欢粉红色的衣服。',p:'Wǒ xǐhuan fěnhóngsè de yīfu.'},
+  {r:'У меня немало книг.',z:'我有不少书。',p:'Wǒ yǒu bù shǎo shū.'},
+  {r:'Тут слишком много людей.',z:'人太多了。',p:'Rén tài duō le.'}
+ ],
+ write:[
+  {t:'Пропиши в клетках',d:'Вслух называй пиньинь с тоном.',copy:['买','钱','块','本','个','多']},
+  {t:'Напиши цены иероглифами',d:'15 юаней · 40 юаней · 68 юаней · 92 юаня · 100 юаней. Образец: 十五块。',lines:2},
+  {t:'Вставь счётное слово 个 или 本',d:'三 ___ 杯子 · 一 ___ 书 · 两 ___ 人 · 五 ___ 书 · 一 ___ 电视',zh:1},
+  {t:'Собери 太…了',d:'Достройте фразы: 这个 ___ 贵 ___ ! Напиши три своих: 太漂亮了、太多了 и одно своё.',lines:2},
+  {t:'Мини-диалог в магазине',d:'Запиши диалог из четырёх реплик: спроси цену, услышь ответ, скажи «слишком дорого/красиво», скажи «я покупаю».',lines:4}
+ ],
+ test:[
+  {t:'tf',em:'🍎🍌🍇',w:'水果',p:'shuǐguǒ',a:1},
+  {t:'tf',em:'☕',w:'衣服',p:'yīfu',a:0},
+  {t:'tf',em:'👗',w:'漂亮',p:'piàoliang',a:1},
+  {t:'ch',q:'这个 ___ ？— 四十块。',p:'Zhège __ ? — Sìshí kuài.',o:['多少钱','什么','谁'],a:0},
+  {t:'ch',q:'我买一 ___ 书。',p:'Wǒ mǎi yì __ shū.',o:['个','本','块'],a:1},
+  {t:'ch',q:'衣服 ___ 漂亮 ___ ！',p:'Yīfu __ piàoliang __ !',o:['太…了','不…吗','很…的'],a:0}
+ ]},
+
+{n:3,cn:'时间和天气',ru:'Время и погода',
+ goal:'Здесь ты почти всё узнаешь: 天 из 星期天, 年 из 年级, месяцы и числа мы прошли. Добавляем только «сегодня — вчера», погоду и глаголы движения.',
+ words:[
+  {h:'今天',p:'jīntiān',r:'сегодня',m:'天 ты знаешь по 星期天! 今 — «нынешний».',k:1},
+  {h:'昨天',p:'zuótiān',r:'вчера',m:'Тот же 天, а слева в 昨 солнце 日 — прошедший день.',k:1},
+  {h:'什么时候',p:'shénme shíhou',r:'когда',m:'Дословно «какое время». Отвечаем датой, которую уже умеем: 十二月十九号.'},
+  {h:'年',p:'nián',r:'год',m:'Ты знаешь его по 年级 — «год обучения», класс.',k:1},
+  {h:'岁',p:'suì',r:'год (о возрасте)',m:'Сверху 山 гора: сколько гор прожил. Возраст — только 岁, не 年.'},
+  {h:'天气',p:'tiānqì',r:'погода',m:'天 «небо» + 气 «воздух» — состояние неба.',k:1},
+  {h:'热',p:'rè',r:'жарко, жара',m:'Внизу четыре точки 灬 — это огонь. Жарко!'},
+  {h:'冷',p:'lěng',r:'холодно',m:'Слева две черточки 冫— лёд. Противоположность огню.'},
+  {h:'去',p:'qù',r:'идти, ехать (туда)',m:'Движение ОТ говорящего.'},
+  {h:'来',p:'lái',r:'приходить (сюда)',m:'Движение К говорящему. Пара к 去.'},
+  {h:'回来',p:'huílái',r:'возвращаться',m:'回 — спираль, «обратно». Плюс 来 — вернуться сюда.'},
+  {h:'前面',p:'qiánmiàn',r:'впереди, спереди',m:'前 «перед» + 面 «сторона».'}
+ ],
+ say:[
+  {r:'Сегодня очень жарко.',z:'今天很热。',p:'Jīntiān hěn rè.'},
+  {r:'Вчера было очень холодно.',z:'昨天很冷。',p:'Zuótiān hěn lěng.'},
+  {r:'Какая сегодня погода?',z:'今天天气怎么样？',p:'Jīntiān tiānqì zěnmeyàng?'},
+  {r:'Мне двенадцать лет.',z:'我十二岁。',p:'Wǒ shí\u2019èr suì.'},
+  {r:'Когда он вернётся?',z:'他什么时候回来？',p:'Tā shénme shíhou huílái?'},
+  {r:'Девятнадцатого декабря.',z:'十二月十九号。',p:'Shí\u2019èr yuè shíjiǔ hào.'},
+  {r:'Я иду в школу.',z:'我去学校。',p:'Wǒ qù xuéxiào.'},
+  {r:'Мама возвращается в шесть вечера.',z:'妈妈晚上六点回来。',p:'Māma wǎnshang liù diǎn huílái.'},
+  {r:'Впереди — моя школа.',z:'前面是我的学校。',p:'Qiánmiàn shì wǒ de xuéxiào.'},
+  {r:'Я учу китайский уже год.',z:'我学习汉语一年了。',p:'Wǒ xuéxí Hànyǔ yì nián le.'}
+ ],
+ write:[
+  {t:'Пропиши в клетках',d:'Обрати внимание на 灬 внизу 热 и на 冫слева в 冷.',copy:['今','昨','年','岁','热','冷']},
+  {t:'今天 или 昨天',d:'___ 很热。 ___ 很冷。 ___ 是星期五。Допиши сам ещё два предложения.',zh:1},
+  {t:'年 или 岁',d:'我十二 ___ 。 我上七 ___ 级。 我学习汉语一 ___ 了。 我妈妈四十 ___ 。',zh:1},
+  {t:'Ответь датами',d:'На вопрос 他什么时候回来？ напиши пять разных ответов датами (месяц + число).',lines:3},
+  {t:'Погода на неделю',d:'Напиши пять предложений по образцу: 星期一很热。星期二很冷。Используй все дни недели.',lines:3}
+ ],
+ test:[
+  {t:'tf',em:'🔥☀️',w:'热',p:'rè',a:1},
+  {t:'tf',em:'❄️',w:'热',p:'rè',a:0},
+  {t:'ch',q:'今天 ___ 怎么样？',p:'Jīntiān __ zěnmeyàng?',o:['天气','名字','水果'],a:0},
+  {t:'ch',q:'我十二 ___ 。',p:'Wǒ shí\u2019èr __ .',o:['年','岁','块'],a:1},
+  {t:'ch',q:'他 ___ 回来？— 十二月十九号。',p:'Tā __ huílái?',o:['怎么','什么时候','多少钱'],a:1},
+  {t:'ch',q:'他学习汉语一 ___ 了。',p:'Tā xuéxí Hànyǔ yì __ le.',o:['岁','天','年'],a:2}
+ ]},
+
+{n:4,cn:'问问题',ru:'Вопросы, люди и места',
+ goal:'Самый важный блок. Вопросительные слова — это половина экзаменационных заданий. И здесь же наш главный мостик: 你怎么去学校？ отвечается транспортом, который мы уже прошли.',
+ words:[
+  {h:'谁',p:'shéi',r:'кто',m:'Слева 讠 — речь: спрашиваешь голосом. Читается shéi, а не «шуй».'},
+  {h:'怎么',p:'zěnme',r:'как, каким образом',m:'Спрашивает про способ: 怎么去？ — как добираешься?'},
+  {h:'怎么样',p:'zěnmeyàng',r:'как? каково? как насчёт?',m:'То же 怎么 + 样 «вид». Спрашивает про оценку: 天气怎么样？'},
+  {h:'哪',p:'nǎ',r:'который, какой',m:'口 слева — снова вопрос ртом. 哪个 — «который из них».'},
+  {h:'有人',p:'yǒu rén',r:'кто-то, есть человек',m:'有 и 人 ты знаешь оба! Вместе — «имеется человек».',k:1},
+  {h:'都',p:'dōu',r:'все, оба',m:'Стоит ПЕРЕД глаголом: 我们都是学生。'},
+  {h:'名字',p:'míngzi',r:'имя',m:'名 — имя, 字 — знак. Твоё 名字 — 莉拉!'},
+  {h:'会',p:'huì',r:'уметь',m:'Умение, которому научился: 我会写汉字。'},
+  {h:'爱',p:'ài',r:'любить',m:'Сильнее, чем 喜欢, которое ты уже знаешь.',k:1},
+  {h:'猫',p:'māo',r:'кошка',m:'Слева 犭— ключ «зверь». Справа 苗 даёт звук māo — как мяуканье.'},
+  {h:'椅子',p:'yǐzi',r:'стул',m:'Слева 木 — дерево, как и в 杯子. Мебель делают из дерева.'},
+  {h:'医院',p:'yīyuàn',r:'больница',m:'医 «лечить» + 院 «двор, учреждение».'},
+  {h:'饭店',p:'fàndiàn',r:'ресторан',m:'饭 «еда» + 店 «лавка». Дом, где еда.'},
+  {h:'北京',p:'Běijīng',r:'Пекин',m:'北 «север» + 京 «столица». Третий город к твоим 上海 и 香港.',k:1}
+ ],
+ say:[
+  {r:'Чья это книга?',z:'这是谁的书？',p:'Zhè shì shéi de shū?'},
+  {r:'Как ты добираешься до школы?',z:'你怎么去学校？',p:'Nǐ zěnme qù xuéxiào?'},
+  {r:'Я езжу в школу на школьном автобусе.',z:'我坐校车去学校。',p:'Wǒ zuò xiàochē qù xuéxiào.'},
+  {r:'Какая сегодня погода?',z:'今天天气怎么样？',p:'Jīntiān tiānqì zěnmeyàng?'},
+  {r:'Который твой?',z:'哪个是你的？',p:'Nǎge shì nǐ de?'},
+  {r:'Мы все ученики.',z:'我们都是学生。',p:'Wǒmen dōu shì xuésheng.'},
+  {r:'Как тебя зовут?',z:'你叫什么名字？',p:'Nǐ jiào shénme míngzi?'},
+  {r:'Меня зовут Лила.',z:'我叫莉拉。',p:'Wǒ jiào Lìlā.'},
+  {r:'Ты умеешь писать иероглифы?',z:'你会写汉字吗？',p:'Nǐ huì xiě Hànzì ma?'},
+  {r:'Я очень люблю кошек.',z:'我很爱猫。',p:'Wǒ hěn ài māo.'},
+  {r:'Моя мама работает в больнице.',z:'我妈妈在医院工作。',p:'Wǒ māma zài yīyuàn gōngzuò.'},
+  {r:'Кто-то читает — ты слышишь?',z:'有人在读书，你听见了吗？',p:'Yǒu rén zài dú shū, nǐ tīngjiàn le ma?'}
+ ],
+ write:[
+  {t:'Пропиши в клетках',d:'Найди в каждом иероглифе знакомый ключ.',copy:['谁','怎','哪','都','会','猫']},
+  {t:'Вставь вопросительное слово',d:'谁 · 怎么 · 怎么样 · 哪 · 什么时候<br>这是 ___ 的书？ 你 ___ 去学校？ 今天天气 ___ ？ ___ 个是你的？ 他 ___ 回来？',zh:1},
+  {t:'Ответь на пять вопросов о себе',d:'你叫什么名字？ 你怎么去学校？ 你会写汉字吗？ 你爱猫吗？ 你家有几口人？',lines:5},
+  {t:'Поставь 都 на место',d:'Перепиши, вставив 都: 我们(  )是学生。 我爸爸妈妈(  )工作。 我们(  )喜欢红色。',zh:1},
+  {t:'Три города',d:'Напиши по предложению про 北京、上海、香港 по образцу: 我妈妈在北京工作。',lines:3}
+ ],
+ test:[
+  {t:'tf',em:'🐱',w:'猫',p:'māo',a:1},
+  {t:'tf',em:'🪑',w:'医院',p:'yīyuàn',a:0},
+  {t:'ch',q:'这是 ___ 的书？— 我的。',p:'Zhè shì __ de shū?',o:['谁','哪','怎么'],a:0},
+  {t:'ch',q:'你 ___ 去学校？— 我坐校车。',p:'Nǐ __ qù xuéxiào?',o:['怎么样','怎么','什么时候'],a:1},
+  {t:'ch',q:'我们 ___ 是学生。',p:'Wǒmen __ shì xuésheng.',o:['都','会','太'],a:0},
+  {t:'ch',q:'你叫什么 ___ ？',p:'Nǐ jiào shénme __ ?',o:['天气','名字','水果'],a:1}
+ ]},
+
+{n:5,cn:'客气话',ru:'Вежливые слова и генеральная репетиция',
+ goal:'Пять готовых фраз — они почти целиком из знакомых иероглифов. И повторение всех 60 слов перед пробником.',
+ words:[
+  {h:'谢谢',p:'xièxie',r:'спасибо',m:'Слева 讠— речь. Благодарность произносят.'},
+  {h:'不客气',p:'bú kèqi',r:'не за что',m:'不 знаешь, 客 «гость», 气 из 天气. «Не церемонься».',k:1},
+  {h:'对不起',p:'duìbuqǐ',r:'извини(те)',m:'Дословно «не могу поднять на тебя глаза».'},
+  {h:'没关系',p:'méi guānxi',r:'ничего страшного',m:'没 ты знаешь по 没有! «Нет связи» = неважно.',k:1},
+  {h:'好的',p:'hǎo de',r:'хорошо, ладно',m:'好 и 的 — оба твои давние знакомые.',k:1},
+  {h:'小',p:'xiǎo',r:'маленький',m:'Ставится перед словом ласково: 小猫 — кошечка, котёнок.'}
+ ],
+ say:[
+  {r:'— Спасибо! — Не за что.',z:'—谢谢你！ —不客气。',p:'— Xièxie nǐ! — Bú kèqi.'},
+  {r:'— Извини. — Ничего страшного.',z:'—对不起。 —没关系。',p:'— Duìbuqǐ. — Méi guānxi.'},
+  {r:'— Пойдём в ресторан, как насчёт? — Хорошо, спасибо!',z:'—我们去饭店，怎么样？ —好的，谢谢！',p:'— Wǒmen qù fàndiàn, zěnmeyàng? — Hǎo de, xièxie!'},
+  {r:'Спасибо, что навестил меня в больнице.',z:'谢谢你来医院看我。',p:'Xièxie nǐ lái yīyuàn kàn wǒ.'},
+  {r:'Извини, дома кончился чай. Может, воды?',z:'对不起，家里没茶了。喝水怎么样？',p:'Duìbuqǐ, jiā li méi chá le. Hē shuǐ zěnmeyàng?'},
+  {r:'Одежда очень красивая, спасибо. — Не за что.',z:'—衣服很漂亮，谢谢。 —不客气。',p:'— Yīfu hěn piàoliang, xièxie. — Bú kèqi.'},
+  {r:'Кошечка, ты не любишь это есть?',z:'小猫，你不爱吃这个吗？',p:'Xiǎo māo, nǐ bú ài chī zhège ma?'},
+  {r:'Это телевизор, который я вчера купила.',z:'这是我昨天买的电视。',p:'Zhè shì wǒ zuótiān mǎi de diànshì.'}
+ ],
+ write:[
+  {t:'Пропиши в клетках',d:'Последняя порция.',copy:['谢','客','对','关','好']},
+  {t:'Достройте диалоги',d:'—谢谢你！ — ______ &nbsp;·&nbsp; —对不起。 — ______ &nbsp;·&nbsp; —我们去饭店，怎么样？ — ______',zh:1},
+  {t:'Свободное письмо',d:'Напиши восемь предложений о себе, используя как можно больше новых слов: что делаешь каждый день, какая погода, сколько тебе лет, что любишь.',lines:8},
+  {t:'Генеральная репетиция',d:'Прогоняем все 60 слов в спринте два раза подряд. Цель — 45 слов и больше за минуту. Затем — пробный вариант HSK 1.'}
+ ],
+ test:[
+  {t:'ch',q:'—谢谢你！ — ___ 。',p:'— Xièxie nǐ! — __ .',o:['不客气','没关系','好的'],a:0},
+  {t:'ch',q:'—对不起。 — ___ 。',p:'— Duìbuqǐ. — __ .',o:['谢谢','没关系','怎么样'],a:1},
+  {t:'ch',q:'—我们去饭店，怎么样？ — ___ ，谢谢！',p:'— … zěnmeyàng? — __ , xièxie!',o:['对不起','不客气','好的'],a:2},
+  {t:'tf',em:'🙅‍♀️😊',w:'没关系',p:'méi guānxi',a:1},
+  {t:'ch',q:'谢谢你 ___ 医院看我。',p:'Xièxie nǐ __ yīyuàn kàn wǒ.',o:['来','买','写'],a:0},
+  {t:'ch',q:'这是我 ___ 买的电视。',p:'Zhè shì wǒ __ mǎi de diànshì.',a:1,o:['今天','昨天','什么时候']}
+ ]}
+];
+
+let cur=1, blur=false, mnem=false;
+const ans={};
+
+function el(h){const d=document.createElement('div');d.innerHTML=h.trim();return d.firstChild}
+
+/* ---------- ВКЛАДКИ ---------- */
+document.getElementById('tabs').innerHTML=B.map(b=>
+ `<button class="tab${b.n===1?' on':''}" data-t="${b.n}"><b>${b.n}</b>${b.ru}</button>`).join('');
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  cur=+t.dataset.t;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
+  document.querySelectorAll('.block').forEach(x=>x.style.display=(+x.dataset.b===cur)?'block':'none');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ---------- РЕНДЕР ---------- */
+const root=document.getElementById('blocks');
+B.forEach(b=>{
+  const words=b.words.map((w,i)=>
+    `<div class="w" data-w="${b.n}-${i}">${w.k?'<span class="known">знакомо</span>':''}
+      <div class="h zh">${w.h}</div><div class="p">${w.p}</div><div class="r">${w.r}</div>
+      <div class="m">${w.m}</div></div>`).join('');
+
+  const say=b.say.map((s,i)=>
+    `<div class="sr" data-s="${b.n}-${i}"><div class="n">${i+1}</div>
+      <div class="body"><div class="rus">${s.r}</div>
+      <div class="ans"><span class="zh">${s.z}</span><span class="p">${s.p}</span></div></div>
+      <div class="arrow">▾</div></div>`).join('');
+
+  const write=b.write.map((t,i)=>{
+    let extra='';
+    if(t.copy)extra='<div class="grid-copy">'+t.copy.map(c=>`<div class="cell"><span>${c}</span></div>`).join('')+'</div>';
+    if(t.lines)extra='<div class="lines">'+'<i></i>'.repeat(t.lines)+'</div>';
+    return `<div class="task"><div class="tt"><i>${i+1}</i>${t.t}</div>
+      <div class="td${t.zh?' zh-in':''}">${t.d||''}</div>${extra}</div>`;
+  }).join('');
+
+  const test=b.test.map((q,i)=>{
+    const id=b.n+'-'+i;
+    if(q.t==='tf'){
+      return `<div class="ti" data-q="${id}">
+        <div class="q"><span class="em">${q.em}</span><span class="zh">${q.w}</span>
+        <span class="py" style="display:inline;margin-left:8px">${q.p}</span></div>
+        <div class="opts"><button class="opt" data-q="${id}" data-v="1">✓</button>
+        <button class="opt" data-q="${id}" data-v="0">✗</button></div></div>`;
+    }
+    return `<div class="ti" data-q="${id}">
+      <div class="py">${q.p}</div><div class="q zh">${q.q}</div>
+      <div class="opts">${q.o.map((o,j)=>`<button class="opt" data-q="${id}" data-v="${j}">${o}</button>`).join('')}</div></div>`;
+  }).join('');
+
+  root.appendChild(el(`<div class="block" data-b="${b.n}" style="display:${b.n===1?'block':'none'}">
+    <div class="blockhd">
+      <div class="num">БЛОК ${b.n} · 25 МИНУТ</div>
+      <h2 class="zh">${b.cn}</h2><div class="ru">${b.ru}</div>
+      <div class="goal">${b.goal}</div>
+    </div>
+
+    <section class="mod m-words"><div class="modhd"><span class="cn">词</span><h3>Слова — ${b.words.length}</h3>
+      <span class="tip">нажми на карточку —<br>откроется подсказка</span></div>
+      <div class="words">${words}</div></section>
+
+    <section class="mod m-sprint"><div class="sprint" data-sp="${b.n}"></div></section>
+
+    <section class="mod m-say"><div class="modhd"><span class="cn">说</span><h3>Говорим вслух</h3>
+      <span class="tip">скажи сам, потом<br>открой и сверься</span></div>
+      <div class="say">${say}</div></section>
+
+    <section class="mod m-write"><div class="modhd"><span class="cn">写</span><h3>Пишем в тетради</h3>
+      <span class="tip">можно распечатать</span></div>
+      <div class="write">${write}</div></section>
+
+    <section class="mod m-test"><div class="modhd"><span class="cn">测</span><h3>Мини-тест в формате HSK</h3></div>
+      <div class="test">${test}
+      <button class="btn main" data-check="${b.n}" style="margin-top:14px">Проверить</button>
+      <div class="tres" data-res="${b.n}"></div></div></section>
+  </div>`));
+});
+
+/* карточки слов */
+document.querySelectorAll('.w').forEach(w=>w.addEventListener('click',()=>w.classList.toggle('open')));
+/* фразы */
+document.querySelectorAll('.sr').forEach(s=>s.addEventListener('click',()=>s.classList.toggle('open')));
+/* тест */
+document.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
+  const q=o.dataset.q;
+  if(document.querySelector(`.tres[data-res="${q.split('-')[0]}"]`).classList.contains('show'))return;
+  ans[q]=+o.dataset.v;
+  document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(x=>x.classList.toggle('sel',x===o));
+}));
+document.querySelectorAll('[data-check]').forEach(btn=>btn.addEventListener('click',()=>{
+  const n=+btn.dataset.check, blk=B.find(x=>x.n===n);
+  let c=0;
+  blk.test.forEach((q,i)=>{
+    const id=n+'-'+i, my=ans[id];
+    document.querySelectorAll(`.opt[data-q="${id}"]`).forEach(o=>{
+      o.classList.remove('sel');
+      if(+o.dataset.v===q.a)o.classList.add(my===q.a?'ok':'miss');
+      else if(+o.dataset.v===my)o.classList.add('bad');
+    });
+    if(my===q.a)c++;
+  });
+  const r=document.querySelector(`.tres[data-res="${n}"]`);
+  r.innerHTML=`<b>${c} из ${blk.test.length}</b> — `+
+    (c===blk.test.length?'идеально, блок закрыт! 太好了！'
+     :c>=blk.test.length-1?'почти всё. Разбери одну ошибку — и дальше.'
+     :'вернись к карточкам этого блока и прогони спринт ещё раз.');
+  r.classList.add('show');
+}));
+
+/* ---------- СПРИНТ ---------- */
+let sp={on:false,t:null};
+document.getElementById('bSprint').addEventListener('click',()=>{
+  const box=document.querySelector(`.sprint[data-sp="${cur}"]`);
+  if(sp.on){endSprint();return;}
+  const blk=B.find(x=>x.n===cur);
+  const deck=blk.words.slice().sort(()=>Math.random()-.5);
+  sp={on:true,box,deck,i:0,ok:0,bad:[],left:60};
+  box.classList.add('on');
+  document.getElementById('bSprint').textContent='⏹ Стоп';
+  drawSprint();
+  sp.t=setInterval(()=>{sp.left--;if(sp.left<=0){endSprint();}else drawClock();},1000);
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+});
+function drawClock(){const c=sp.box.querySelector('.clock');if(c)c.textContent=sp.left+' с'}
+function drawSprint(){
+  if(sp.i>=sp.deck.length)sp.deck=sp.deck.concat(sp.deck.slice().sort(()=>Math.random()-.5));
+  const w=sp.deck[sp.i];
+  sp.box.innerHTML=`<div class="clock">${sp.left} с</div>
+    <div class="card zh">${w.h}</div><div class="sub">назови вслух перевод и пиньинь</div>
+    <div class="btns"><button class="y">✓ знаю</button><button class="n">✗ не помню</button></div>
+    <div class="sub" style="margin-top:12px;font-size:.8rem">верно: ${sp.ok}</div>`;
+  sp.box.querySelector('.y').onclick=()=>{sp.ok++;sp.i++;drawSprint()};
+  sp.box.querySelector('.n').onclick=()=>{sp.bad.push(w);sp.i++;drawSprint()};
+}
+function endSprint(){
+  clearInterval(sp.t);sp.on=false;
+  document.getElementById('bSprint').textContent='⏱ Спринт: 60 секунд';
+  const bad=sp.bad.filter((v,i,a)=>a.findIndex(x=>x.h===v.h)===i);
+  sp.box.innerHTML=`<div class="clock">${sp.ok}</div>
+    <div class="sub" style="margin-top:6px">слов за минуту</div>
+    <div class="done" style="margin-top:16px">${
+      bad.length?'Западают: '+bad.map(w=>`<span class="zh">${w.h}</span> ${w.p}`).join(' · ')
+      :'Ни одной осечки. 太棒了！'}</div>
+    <div class="btns"><button class="y" onclick="document.getElementById('bSprint').click()">Ещё раз</button></div>`;
+}
+
+/* ---------- ПАНЕЛЬ ---------- */
+document.getElementById('bBlur').addEventListener('click',e=>{
+  blur=!blur;document.querySelectorAll('.w').forEach(w=>w.classList.toggle('blur',blur));
+  e.target.textContent=blur?'Показать перевод':'Скрыть перевод';
+});
+document.getElementById('bMnem').addEventListener('click',e=>{
+  mnem=!mnem;document.querySelectorAll('.w').forEach(w=>w.classList.toggle('open',mnem));
+  e.target.textContent=mnem?'Свернуть подсказки':'Подсказки к иероглифам';
+});
+document.getElementById('bPrint').addEventListener('click',()=>{
+  document.body.classList.add('printmode');
+  window.print();
+  setTimeout(()=>document.body.classList.remove('printmode'),400);
+});
+</script>
+</body>
+</html>
