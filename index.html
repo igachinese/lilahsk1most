@@ -144,6 +144,12 @@
   }
   body.printmode .mod.m-words,body.printmode .mod.m-say,body.printmode .mod.m-test,body.printmode .mod.m-sprint{display:none}
   body.printmode .block{display:block!important}
+  .ryvok{display:flex;align-items:center;gap:14px;margin-top:20px;background:var(--rule);color:#f4ece0;border-radius:12px;padding:14px 16px;text-decoration:none;transition:.15s}
+  .ryvok:hover{background:#3a322c}
+  .ryvok .cn{font-family:'Noto Serif SC',serif;font-weight:900;font-size:1.9rem;color:var(--gold);line-height:1}
+  .ryvok b{display:block;font-family:'Playfair Display',serif;font-size:1.1rem}
+  .ryvok small{display:block;font-size:.8rem;opacity:.8}
+  .ryvok .go{margin-left:auto;font-size:1.3rem;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -159,6 +165,11 @@
     <span class="stat"><b>25</b> минут на блок</span>
     <span class="stat">для <b>莉拉</b></span>
   </div>
+  <a class="ryvok" href="ryvok.html">
+    <span class="cn">冲</span>
+    <span><b>Рывок к HSK1</b><small>Тренажёр перед пробным экзаменом: карточки, тест, на слух, фразы, ловушки</small></span>
+    <span class="go">→</span>
+  </a>
 </header>
 
 <nav><div class="tabs" id="tabs"></div></nav>
