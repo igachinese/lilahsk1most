@@ -278,12 +278,22 @@ const stage=$("stage");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 /* ---------- озвучка ---------- */
+// Детского голоса в браузерах обычно нет: берём детский/женский китайский голос и поднимаем тон.
+// Порядок = приоритет (Xiaoyi в Edge — детский). Мужские голоса не берём.
+const KID_VOICES=[/xiaoyi/i,/xiaoxiao/i,/xiaohan/i,/xiaomeng/i,/tingting|ting-ting/i,/yu-?shu/i,/huihui/i,/yaoyao/i,/google.*(普通话|mandarin)/i,/meijia|mei-jia/i,/sinji|sin-ji/i];
+const MALE_VOICES=/kangkang|yunxi|yunyang|yunjian|yunxia|yunhao|yunfeng|yunze|li-?mu|danny|male|男/i;
+const KID_PITCH=1.6;
 let zhVoice=null;
-function pickVoice(){try{const v=speechSynthesis.getVoices();zhVoice=v.find(x=>/^zh[-_]CN/i.test(x.lang))||v.find(x=>/^zh|cmn/i.test(x.lang))||null}catch(e){}}
+function pickVoice(){try{const v=speechSynthesis.getVoices().filter(x=>/^(zh|cmn)/i.test(x.lang));
+  const ok=v.filter(x=>!MALE_VOICES.test(x.name));
+  zhVoice=null;
+  for(const re of KID_VOICES){zhVoice=ok.find(x=>re.test(x.name)&&/CN|Hans/i.test(x.lang))||ok.find(x=>re.test(x.name));if(zhVoice)break;}
+  zhVoice=zhVoice||ok.find(x=>/^zh[-_]CN/i.test(x.lang))||ok[0]||v.find(x=>/^zh[-_]CN/i.test(x.lang))||v[0]||null;
+}catch(e){}}
 try{pickVoice(); speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
 function speak(t,rate){
   try{const s=window.speechSynthesis; if(!s) return false; s.cancel();
-    const u=new SpeechSynthesisUtterance(t.replace(/…/g,"，")); u.lang="zh-CN"; if(zhVoice) u.voice=zhVoice; u.rate=rate||.8; s.speak(u); return true;
+    const u=new SpeechSynthesisUtterance(t.replace(/…/g,"，")); u.lang="zh-CN"; if(zhVoice) u.voice=zhVoice; u.rate=rate||.8; u.pitch=KID_PITCH; s.speak(u); return true;
   }catch(e){return false}
 }
 const hasTTS=()=>("speechSynthesis" in window);
